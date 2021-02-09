@@ -1,11 +1,10 @@
-# My Personal Project
+# Personal Blog
 
-## A subtitle
+## An application to write and manage your personal blog or diary
 
-A *bulleted* list:
-- item 1
-- item 2
-- item 3
-
-An example of text with **bold** and *italic* fonts.  Note that the IntelliJ markdown previewer doesn't seem to render 
-the bold and italic fonts correctly but they will appear correctly on GitHub.
+The purpose of this application is to give users a simple, clean interface for 
+writing and organizing their private thoughts without needing to store them remotely
+or share them with the world. The application will allow users to write entries
+formatted using Markdown syntax. They will also be able to categorize the posts, 
+tag them with various topics, and search through them based on their titles, tags
+or content. 
