@@ -15,4 +15,4 @@ or content.
 - As a user, I want to be able to view a list of blog posts that I have written
 - As a user, I want to be able to edit a blog post that already exists
 - As a user, I want to be able to tag a blog post with one or more topics 
-or categories
+  or categories
