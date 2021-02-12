@@ -5,7 +5,7 @@ import java.util.NoSuchElementException;
 
 public class Blog {
     private static int nextId = 1; // next id
-    private final int id;
+    private int id;
     private String title;
     private ArrayList<Article> articles;
 
@@ -14,7 +14,7 @@ public class Blog {
     public Blog(String author) {
         this.id = nextId++;
         this.title = author;
-        this.articles = new ArrayList<Article>();
+        this.articles = new ArrayList<>();
     }
 
     // MODIFIES: this
