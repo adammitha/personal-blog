@@ -1,17 +1,18 @@
 package model;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.time.LocalDate;
 
 public class Article {
     private static int nextId = 1;
-    private final int id;
+    private int id;
     private String title;
     private String author;
     private String content;
-    private Date dateCreated;
+    private final Date dateCreated;
     private Date dateEdited;
+    private ArrayList<Tag> tags;
 
     public Article(String title, String author, String content) {
         this.id = nextId++;
@@ -20,30 +21,62 @@ public class Article {
         this.content = content;
         this.dateCreated = Calendar.getInstance().getTime();
         this.dateEdited = this.dateCreated;
+        this.tags = new ArrayList<>();
+    }
+
+    // EFFECTS: returns a list of the Article's tags
+    public ArrayList<Tag> getTags() {
+        return tags;
+    }
+
+    // MODIFIES: this
+    // EFFECTS: checks if the new tag collides with an existing tag (same name or color)
+    //          and adds it to tags if there are no collisions
+    public boolean addTag(Tag newTag) {
+        // Check if a tag with the same name or color already exists
+        for (Tag tag : tags) {
+            if (tag.getName().equals(newTag.getName()) || tag.getColor().equals(newTag.getColor())) {
+                return false;
+            }
+        }
+        this.tags.add(newTag);
+        return true;
+    }
+
+    // REQUIRES: name is a nonempty string
+    // MODIFIES: this
+    // EFFECTS: removes the tag with the given name from the Article's list of tags
+    public boolean deleteTag(String name) {
+        // Try to delete a tag
+        for (Tag tag : this.tags) {
+            if (tag.getName().equals(name)) {
+                this.tags.remove(tag);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    // REQUIRES: newTitle and newString are nonempty string
+    // MODIFIES: this
+    // EFFECTS: updates the title and content of the blog post with newTitle and newContent
+    //          updates the dateEdited with today's date
+    public void edit(String newTitle, String newContent) {
+        this.title = newTitle;
+        this.content = newContent;
+        this.dateEdited = Calendar.getInstance().getTime();
     }
 
     public String getTitle() {
         return title;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
     public String getAuthor() {
         return author;
     }
 
-    public void setAuthor(String author) {
-        this.author = author;
-    }
-
     public String getContent() {
         return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
     }
 
     public Date getDateCreated() {
@@ -54,11 +87,8 @@ public class Article {
         return dateEdited;
     }
 
-    public void setDateEdited(Date dateEdited) {
-        this.dateEdited = dateEdited;
-    }
-
     public int getId() {
         return id;
     }
+
 }
