@@ -4,16 +4,13 @@ import java.util.ArrayList;
 import java.util.NoSuchElementException;
 
 public class Blog {
-    private static int nextId = 1; // next id
-    private int id;
     private String title;
     private ArrayList<Article> articles;
 
-    // REQUIRES: author is a non-empty string
+    // REQUIRES: title is a non-empty string
     // EFFECTS: creates a new blog with the given title
-    public Blog(String author) {
-        this.id = nextId++;
-        this.title = author;
+    public Blog(String title) {
+        this.title = title;
         this.articles = new ArrayList<>();
     }
 
@@ -25,7 +22,7 @@ public class Blog {
 
     // EFFECTS: Returns the article with the provided id,
     //          or throws an exception if no such article exists.
-    public Article findArticle(int id) throws NoSuchElementException {
+    public Article findArticleById(int id) throws NoSuchElementException {
         for (Article article : this.articles) {
             if (article.getId() == id) {
                 return article;
@@ -40,10 +37,6 @@ public class Blog {
 
     public void setTitle(String title) {
         this.title = title;
-    }
-
-    public int getId() {
-        return id;
     }
 
     public ArrayList<Article> getArticles() {
