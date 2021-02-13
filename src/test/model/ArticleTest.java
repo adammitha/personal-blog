@@ -90,5 +90,12 @@ public class ArticleTest {
         assertEquals(article.getTags().size(), 2);
     }
 
+    @Test
+    public void testToString() {
+        assertTrue(article.toString().contains(article.getTitle()));
+        assertTrue(article.toString().contains(article.getAuthor()));
+        assertTrue(article.toString().contains(article.getDateCreated().toString()));
+        assertTrue(article.toString().contains(article.getDateEdited().toString()));
+    }
 
 }

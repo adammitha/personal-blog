@@ -63,6 +63,17 @@ public class Article {
         this.dateEdited = LocalDate.now();
     }
 
+    // EFFECTS: returns a string representation of the Article
+    @Override
+    public String toString() {
+        return String.format(
+                "%s by %s. Written on %s. Last edited %s.",
+                this.title,
+                this.author,
+                this.dateCreated,
+                this.dateEdited);
+    }
+
     public String getTitle() {
         return title;
     }
