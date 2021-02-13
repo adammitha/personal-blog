@@ -2,6 +2,7 @@ package model;
 
 import java.awt.*;
 
+// Represents a tag on an article having a name and a color
 public class Tag {
     public static final Color BLUE = new Color(0, 0, 255);
     public static final Color RED = new Color(255, 0, 0);

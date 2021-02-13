@@ -3,6 +3,8 @@ package model;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
+// Article represents an article in a blog. It has a title, author, and content which are modifiable by the user.
+// The date created, date edited and id are managed automatically by the constructor and edit methods.
 public class Article {
     private static int nextId = 1;
     private int id;

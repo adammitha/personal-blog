@@ -3,6 +3,7 @@ package model;
 import java.util.ArrayList;
 import java.util.NoSuchElementException;
 
+// Represents a blog with a title and a list of articles that make up the blog.
 public class Blog {
     private String title;
     private ArrayList<Article> articles;
