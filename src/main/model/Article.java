@@ -1,8 +1,7 @@
 package model;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 
 public class Article {
     private static int nextId = 1;
@@ -10,24 +9,21 @@ public class Article {
     private String title;
     private String author;
     private String content;
-    private final Date dateCreated;
-    private Date dateEdited;
+    private final LocalDate dateCreated;
+    private LocalDate dateEdited;
     private ArrayList<Tag> tags;
 
-    public Article(String title, String author, String content) {
+    // REQUIRES: title, author, and content are nonempty strings
+    public Article(String title, String author, String content, LocalDate dateCreated) {
         this.id = nextId++;
         this.title = title;
         this.author = author;
         this.content = content;
-        this.dateCreated = Calendar.getInstance().getTime();
-        this.dateEdited = this.dateCreated;
+        this.dateCreated = dateCreated;
+        this.dateEdited = dateCreated;
         this.tags = new ArrayList<>();
     }
 
-    // EFFECTS: returns a list of the Article's tags
-    public ArrayList<Tag> getTags() {
-        return tags;
-    }
 
     // MODIFIES: this
     // EFFECTS: checks if the new tag collides with an existing tag (same name or color)
@@ -45,7 +41,7 @@ public class Article {
 
     // REQUIRES: name is a nonempty string
     // MODIFIES: this
-    // EFFECTS: removes the tag with the given name from the Article's list of tags
+    // EFFECTS: removes the tag with the given name from the Article's list of tags if it exists
     public boolean deleteTag(String name) {
         // Try to delete a tag
         for (Tag tag : this.tags) {
@@ -64,7 +60,7 @@ public class Article {
     public void edit(String newTitle, String newContent) {
         this.title = newTitle;
         this.content = newContent;
-        this.dateEdited = Calendar.getInstance().getTime();
+        this.dateEdited = LocalDate.now();
     }
 
     public String getTitle() {
@@ -79,16 +75,20 @@ public class Article {
         return content;
     }
 
-    public Date getDateCreated() {
+    public LocalDate getDateCreated() {
         return dateCreated;
     }
 
-    public Date getDateEdited() {
+    public LocalDate getDateEdited() {
         return dateEdited;
     }
 
     public int getId() {
         return id;
+    }
+
+    public ArrayList<Tag> getTags() {
+        return tags;
     }
 
 }
