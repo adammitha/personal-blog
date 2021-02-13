@@ -14,8 +14,8 @@ public class Article {
     private ArrayList<Tag> tags;
 
     // REQUIRES: title, author, and content are nonempty strings
-    public Article(String title, String author, String content, LocalDate dateCreated) {
-        this.id = nextId++;
+    public Article(int id, String title, String author, String content, LocalDate dateCreated) {
+        this.id = id;
         this.title = title;
         this.author = author;
         this.content = content;

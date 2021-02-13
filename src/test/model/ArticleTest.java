@@ -14,6 +14,7 @@ public class ArticleTest {
     public void setUp() {
         // Create new article with dateCreated yesterday
         article = new Article(
+                1,
                 "How to destroy the Death Star",
                 "Luke Skywalker",
                 "Fire a photon torpedo into the exhaust vent.",
