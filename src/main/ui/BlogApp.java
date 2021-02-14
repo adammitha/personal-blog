@@ -3,6 +3,7 @@ package ui;
 import model.*;
 
 import java.time.LocalDate;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 public class BlogApp {
@@ -52,6 +53,7 @@ public class BlogApp {
         System.out.println("\nSelect from:");
         System.out.println("\tn -> write new article");
         System.out.println("\tl -> list existing articles");
+        System.out.println("\tr -> read an existing article");
         System.out.println("\te -> edit an existing article");
         System.out.println("\tq -> quit");
     }
@@ -64,8 +66,15 @@ public class BlogApp {
             case "l":
                 listArticles();
                 break;
+            case "r":
+                readArticle();
             case "e":
-                editArticle();
+                Article articleToEdit = findArticle();
+                if (articleToEdit == null) {
+                    break;
+                } else {
+                    editArticle(articleToEdit);
+                }
                 break;
             default:
                 System.out.println("I don't recognize that command. Please try again.");
@@ -77,14 +86,11 @@ public class BlogApp {
     private void createNewArticle() {
         System.out.println("Create a new article");
 
-        System.out.println("Title:");
-        String title = readNonEmptyString();
+        String title = readNonEmptyString("Title:");
 
-        System.out.println("Author:");
-        String author = readNonEmptyString();
+        String author = readNonEmptyString("Author:");
 
-        System.out.println("Content:");
-        String content = readNonEmptyString();
+        String content = readNonEmptyString("Content:");
 
         Article newArticle = new Article(
                 Article.getNextId(),
@@ -100,8 +106,10 @@ public class BlogApp {
         System.out.println(newArticle.toString());
     }
 
+    // REQUIRES: promptMessage is a nonempty string that describes the input wanted from the user
     // EFFECTS: Reads from stdin and returns result if it is nonempty
-    private String readNonEmptyString() {
+    private String readNonEmptyString(String promptMessage) {
+        System.out.println(promptMessage);
         String in = "";
         while (in.equals("")) {
             in = input.next();
@@ -116,7 +124,65 @@ public class BlogApp {
         }
     }
 
-    private void editArticle() {
-        System.out.println("Create a new article");
+    private void readArticle() {
+        listArticles();
+        Article articleToRead = findArticle();
+        System.out.println(articleToRead.toString());
+        System.out.println(articleToRead.getContent());
+    }
+
+    // EFFECTS: Displays list of articles and asks user which one they would like to edit
+    //          Returns article if found, or displays prompt again. User can type 'q' to return
+    //          to main menu.
+    private Article findArticle() {
+        System.out.println("Which article would you like to edit?");
+        listArticles();
+
+        Article article = null;
+        while (article == null) {
+
+            String id = readNonEmptyString(
+                    "Enter the id of the article type q to return to the main menu:"
+            );
+
+            if (id.equals("q")) {
+                return null;
+            }
+
+            try {
+                article = blog.findArticleById(Integer.parseInt(id));
+            } catch (NoSuchElementException e) {
+                System.out.println(e.getMessage());
+            }
+        }
+
+        return article;
+    }
+
+    private String getInputOrDefault(String promptMessage, String defaultValue) {
+        System.out.println(promptMessage);
+        String in = input.next();
+        if (in.equals("")) {
+            return defaultValue;
+        }
+        return in;
+    }
+
+    private void editArticle(Article article) {
+        String newTitle = getInputOrDefault(
+                "Please enter a new title (leave blank if you don't want to change it): ",
+                article.getTitle()
+        );
+
+        String newContent = getInputOrDefault(
+                "Please enter new content (leave blank if you don't want to change it): ",
+                article.getContent()
+        );
+
+        article.edit(
+                newTitle,
+                newContent
+        );
+
     }
 }
