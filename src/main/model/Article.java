@@ -26,6 +26,10 @@ public class Article {
         this.tags = new ArrayList<>();
     }
 
+    public static int getNextId() {
+        return nextId;
+    }
+
 
     // MODIFIES: this
     // EFFECTS: checks if the new tag collides with an existing tag (same name or color)
