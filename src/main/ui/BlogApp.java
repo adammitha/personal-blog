@@ -1,13 +1,9 @@
 package ui;
 
-import com.sun.org.apache.xpath.internal.functions.FuncFalse;
 import model.*;
 
-import java.awt.*;
-import java.lang.reflect.Field;
 import java.time.LocalDate;
 import java.util.NoSuchElementException;
-import java.util.Objects;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 
