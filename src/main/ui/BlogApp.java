@@ -58,6 +58,7 @@ public class BlogApp {
         System.out.println("\tq -> quit");
     }
 
+    // EFFECTS: evaluates the command entered by the user and calls the appropriate function
     private void parseCommand(String command) {
         switch (command) {
             case "n":
@@ -69,12 +70,7 @@ public class BlogApp {
             case "r":
                 readArticle();
             case "e":
-                Article articleToEdit = findArticle();
-                if (articleToEdit == null) {
-                    break;
-                } else {
-                    editArticle(articleToEdit);
-                }
+                editArticle();
                 break;
             default:
                 System.out.println("I don't recognize that command. Please try again.");
@@ -124,7 +120,9 @@ public class BlogApp {
         }
     }
 
+    // EFFECTS: prints the article to the screen for the user to read
     private void readArticle() {
+        System.out.println("Which article would you like to read?");
         listArticles();
         Article articleToRead = findArticle();
         System.out.println(articleToRead.toString());
@@ -135,14 +133,13 @@ public class BlogApp {
     //          Returns article if found, or displays prompt again. User can type 'q' to return
     //          to main menu.
     private Article findArticle() {
-        System.out.println("Which article would you like to edit?");
         listArticles();
 
         Article article = null;
         while (article == null) {
 
             String id = readNonEmptyString(
-                    "Enter the id of the article type q to return to the main menu:"
+                    "Enter the id of the article or type q to return to the main menu:"
             );
 
             if (id.equals("q")) {
@@ -159,6 +156,8 @@ public class BlogApp {
         return article;
     }
 
+    // REQUIRES: promptMessage and defaultValue are nonempty
+    // EFFECTS: Prompts user for input and returns the value. Returns defaultValue if the input is empty.
     private String getInputOrDefault(String promptMessage, String defaultValue) {
         System.out.println(promptMessage);
         String in = input.next();
@@ -168,18 +167,27 @@ public class BlogApp {
         return in;
     }
 
-    private void editArticle(Article article) {
+    // MODIFIES: this
+    // EFFECTS: prompts the user for a new title and content for the article they want to edit
+    private void editArticle() {
+        System.out.println("Which article would you like to edit?");
+        Article articleToEdit = findArticle();
+
+        if (articleToEdit == null) {
+            return;
+        }
+
         String newTitle = getInputOrDefault(
                 "Please enter a new title (leave blank if you don't want to change it): ",
-                article.getTitle()
+                articleToEdit.getTitle()
         );
 
         String newContent = getInputOrDefault(
                 "Please enter new content (leave blank if you don't want to change it): ",
-                article.getContent()
+                articleToEdit.getContent()
         );
 
-        article.edit(
+        articleToEdit.edit(
                 newTitle,
                 newContent
         );
