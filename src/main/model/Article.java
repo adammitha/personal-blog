@@ -27,7 +27,7 @@ public class Article {
     }
 
     public static int getNextId() {
-        return nextId;
+        return nextId++;
     }
 
 
@@ -59,12 +59,13 @@ public class Article {
         return false;
     }
 
-    // REQUIRES: newTitle and newString are nonempty string
+    // REQUIRES: newTitle, newAuthor and newString are nonempty string
     // MODIFIES: this
-    // EFFECTS: updates the title and content of the blog post with newTitle and newContent
+    // EFFECTS: updates the title, author and content of the blog post with newTitle, newAuthor and newContent
     //          updates the dateEdited with today's date
-    public void edit(String newTitle, String newContent) {
+    public void edit(String newTitle, String newAuthor, String newContent) {
         this.title = newTitle;
+        this.author = newAuthor;
         this.content = newContent;
         this.dateEdited = LocalDate.now();
     }

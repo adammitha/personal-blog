@@ -22,11 +22,26 @@ public class ArticleTest {
     }
 
     @Test
+    public void testGetNextID() {
+        int first_id = Article.getNextId();
+        int second_id = Article.getNextId();
+        int third_id = Article.getNextId();
+        int fourth_id = Article.getNextId();
+        assertEquals(second_id, first_id + 1);
+        assertEquals(third_id, first_id + 2);
+        assertEquals(fourth_id, first_id + 3);
+    }
+
+    @Test
     public void testEditArticle() {
         article.edit(
                 "How to destroy the Death Star (version 2)",
+                "Han Solo",
                 "Enlist the Ewoks!"
         );
+        assertEquals(article.getTitle(), "How to destroy the Death Star (version 2)");
+        assertEquals(article.getAuthor(), "Han Solo");
+        assertEquals(article.getContent(), "Enlist the Ewoks!");
         assertEquals(article.getDateEdited().getDayOfMonth(), LocalDate.now().getDayOfMonth());
         assertEquals(article.getDateEdited().getMonthValue(), LocalDate.now().getMonthValue());
         assertEquals(article.getDateEdited().getYear(), LocalDate.now().getYear());
