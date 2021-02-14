@@ -9,6 +9,7 @@ public class Tag {
 
     private String name;
 
+    // REQUIRES: name is a nonempty string
     // EFFECTS: creates a tag with the given name
     public Tag(String name) {
         this.name = name;

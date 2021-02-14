@@ -26,6 +26,7 @@ public class Article {
         this.tags = new ArrayList<>();
     }
 
+    // EFFECTS: returns the next id for a new article
     public static int getNextId() {
         return nextId++;
     }
