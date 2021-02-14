@@ -1,11 +1,17 @@
 package ui;
 
+import com.sun.org.apache.xpath.internal.functions.FuncFalse;
 import model.*;
 
+import java.awt.*;
+import java.lang.reflect.Field;
 import java.time.LocalDate;
 import java.util.NoSuchElementException;
+import java.util.Objects;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
+// User interface logic for a Blog application that runs on the command line
 public class BlogApp {
     private Blog blog;
     private Scanner input;
@@ -17,6 +23,7 @@ public class BlogApp {
 
     // MODIFIES: this
     // EFFECTS: processes user input and responds
+    // NB: structure of this method is based on the runTeller() function from the Teller App
     private void runBlog() {
         boolean keepGoing = true;
         String command = null;
@@ -34,7 +41,6 @@ public class BlogApp {
             } else {
                 parseCommand(command);
             }
-
         }
     }
 
@@ -49,16 +55,18 @@ public class BlogApp {
         blog = new Blog(title);
     }
 
+    // EFFECTS: displays menu to user
     private void displayMainMenu() {
         System.out.println("\nSelect from:");
         System.out.println("\tn -> write new article");
         System.out.println("\tl -> list existing articles");
         System.out.println("\tr -> read an existing article");
         System.out.println("\te -> edit an existing article");
+        System.out.println("\tt -> tag an existing article");
         System.out.println("\tq -> quit");
     }
 
-    // EFFECTS: evaluates the command entered by the user and calls the appropriate function
+    // EFFECTS: evaluates the command entered by the user and calls the corresponding function
     private void parseCommand(String command) {
         switch (command) {
             case "n":
@@ -69,8 +77,12 @@ public class BlogApp {
                 break;
             case "r":
                 readArticle();
+                break;
             case "e":
                 editArticle();
+                break;
+            case "t":
+                tagArticle();
                 break;
             default:
                 System.out.println("I don't recognize that command. Please try again.");
@@ -116,17 +128,25 @@ public class BlogApp {
     // EFFECTS: Prints out list of articles
     private void listArticles() {
         for (Article article : blog.getArticles()) {
+            String tagString = article.getTags().stream().map(Tag::getName)
+                    .collect(Collectors.joining(", "));
             System.out.println(article.getId() + ": " + article.toString());
+            if (article.getTags().size() > 0) {
+                System.out.println("\tTags: " + tagString);
+            }
         }
     }
 
     // EFFECTS: prints the article to the screen for the user to read
     private void readArticle() {
         System.out.println("Which article would you like to read?");
-        listArticles();
         Article articleToRead = findArticle();
+        if (articleToRead == null) {
+            return;
+        }
         System.out.println(articleToRead.toString());
         System.out.println(articleToRead.getContent());
+        System.out.print("\n");
     }
 
     // EFFECTS: Displays list of articles and asks user which one they would like to edit
@@ -182,6 +202,11 @@ public class BlogApp {
                 articleToEdit.getTitle()
         );
 
+        String newAuthor = getInputOrDefault(
+                "Please enter a new author (leave blank if you don't want to change it): ",
+                articleToEdit.getAuthor()
+        );
+
         String newContent = getInputOrDefault(
                 "Please enter new content (leave blank if you don't want to change it): ",
                 articleToEdit.getContent()
@@ -189,8 +214,31 @@ public class BlogApp {
 
         articleToEdit.edit(
                 newTitle,
+                newAuthor,
                 newContent
         );
+    }
 
+    private void tagArticle() {
+        System.out.println("Which article would you like to tag?");
+        Article articleToTag = findArticle();
+
+        if (articleToTag == null) {
+            return;
+        }
+
+        boolean addedValidTag = false;
+
+        while (!addedValidTag) {
+            String tagName = readNonEmptyString("Please enter the name of your tag: ");
+
+            Tag newTag = new Tag(tagName);
+
+            addedValidTag = articleToTag.addTag(newTag);
+
+            if (!addedValidTag) {
+                System.out.println("Please create a tag with a unique name");
+            }
+        }
     }
 }

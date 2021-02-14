@@ -32,12 +32,12 @@ public class Article {
 
 
     // MODIFIES: this
-    // EFFECTS: checks if the new tag collides with an existing tag (same name or color)
+    // EFFECTS: checks if the new tag collides with an existing tag (same name)
     //          and adds it to tags if there are no collisions
     public boolean addTag(Tag newTag) {
-        // Check if a tag with the same name or color already exists
+        // Check if a tag with the same name already exists
         for (Tag tag : tags) {
-            if (tag.getName().equals(newTag.getName()) || tag.getColor().equals(newTag.getColor())) {
+            if (tag.getName().equals(newTag.getName())) {
                 return false;
             }
         }

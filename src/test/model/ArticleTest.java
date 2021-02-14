@@ -3,6 +3,8 @@ package model;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.awt.Color;
+
 import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -49,8 +51,8 @@ public class ArticleTest {
 
     @Test
     public void testAddTags() {
-        Tag tutorials = new Tag("Tutorials", Tag.BLUE);
-        Tag stories = new Tag("Stories", Tag.YELLOW);
+        Tag tutorials = new Tag("Tutorials");
+        Tag stories = new Tag("Stories");
 
         assertTrue(article.addTag(tutorials));
         assertEquals(article.getTags().size(), 1);
@@ -61,8 +63,8 @@ public class ArticleTest {
 
     @Test
     public void testAddDuplicateNameTags() {
-        Tag tutorials1 = new Tag("Tutorials", Tag.BLUE);
-        Tag tutorials2 = new Tag("Tutorials", Tag.RED);
+        Tag tutorials1 = new Tag("Tutorials");
+        Tag tutorials2 = new Tag("Tutorials");
 
         assertTrue(article.addTag(tutorials1));
         assertEquals(article.getTags().size(), 1);
@@ -72,21 +74,9 @@ public class ArticleTest {
     }
 
     @Test
-    public void testAddDuplicateColorTags() {
-        Tag tutorials = new Tag("Tutorials", Tag.BLUE);
-        Tag stories = new Tag("Stories", Tag.BLUE);
-
-        assertTrue(article.addTag(tutorials));
-        assertEquals(article.getTags().size(), 1);
-
-        assertFalse(article.addTag(stories));
-        assertEquals(article.getTags().size(), 1);
-    }
-
-    @Test
     public void testDeleteTag() {
-        Tag tutorials = new Tag("Tutorials", Tag.BLUE);
-        Tag stories = new Tag("Stories", Tag.YELLOW);
+        Tag tutorials = new Tag("Tutorials");
+        Tag stories = new Tag("Stories");
 
         assertTrue(article.addTag(tutorials));
         assertTrue(article.addTag(stories));
@@ -96,8 +86,8 @@ public class ArticleTest {
 
     @Test
     public void testDeleteTagDoesNotExist() {
-        Tag tutorials = new Tag("Tutorials", Tag.BLUE);
-        Tag stories = new Tag("Stories", Tag.YELLOW);
+        Tag tutorials = new Tag("Tutorials");
+        Tag stories = new Tag("Stories");
 
         assertTrue(article.addTag(tutorials));
         assertTrue(article.addTag(stories));
