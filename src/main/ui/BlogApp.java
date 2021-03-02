@@ -215,6 +215,8 @@ public class BlogApp {
         );
     }
 
+    // MODIFIES: this
+    // EFFECTS: prompts the user for the article to tag and the name of the tag they would like to add
     private void tagArticle() {
         System.out.println("Which article would you like to tag?");
         Article articleToTag = findArticle();
