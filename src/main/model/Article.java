@@ -26,11 +26,28 @@ public class Article {
         this.tags = new ArrayList<>();
     }
 
+    // REQUIRES: title, author, and content are nonempty strings
+    // EFFECTS: article constructor which accepts a dateEdited. To be used with the JsonReader class
+    public Article(int id, String title, String author, String content, LocalDate dateCreated, LocalDate dateEdited) {
+        this.id = id;
+        this.title = title;
+        this.author = author;
+        this.content = content;
+        this.dateCreated = dateCreated;
+        this.dateEdited = dateEdited;
+        this.tags = new ArrayList<>();
+    }
+
     // EFFECTS: returns the next id for a new article
     public static int getNextId() {
         return nextId++;
     }
 
+    // MODIFIES: this
+    // EFFECTS: sets the next id for a new article
+    public static void setNextId(int id) {
+        nextId = id;
+    }
 
     // MODIFIES: this
     // EFFECTS: checks if the new tag collides with an existing tag (same name)

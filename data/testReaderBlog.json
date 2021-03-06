@@ -1,0 +1,29 @@
+{
+  "title": "Captain's Log",
+  "articles" : [
+    {
+      "id": 1,
+      "title": "My first blog post",
+      "author": "Adam Mitha",
+      "content": "Some content goes here",
+      "dateCreated": "2021-01-27",
+      "dateEdited": "2021-01-29",
+      "tags": []
+    },
+    {
+      "id": 2,
+      "title": "My second blog post",
+      "author": "Han Solo",
+      "content": "Some other content goes here",
+      "dateCreated": "2021-02-05",
+      "dateEdited": "2021-03-01",
+      "tags": [
+        {
+          "name": "Tag 1"
+        },
+        {
+          "name": "Tag 2"
+        }]
+    }
+  ]
+}
