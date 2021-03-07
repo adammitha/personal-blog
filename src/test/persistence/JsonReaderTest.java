@@ -52,6 +52,8 @@ public class JsonReaderTest extends JsonTest {
                     "Some other content goes here", articles.get(1));
             assertEquals(0, articles.get(0).getTags().size());
             checkTags(new ArrayList<String>(Arrays.asList("Tag 1", "Tag 2")), articles.get(1).getTags());
+            Article.setNextId(blog.findNextID());
+            assertEquals(Article.getNextId(), 3);
         } catch (IOException e) {
             fail("Couldn't read from file");
         }

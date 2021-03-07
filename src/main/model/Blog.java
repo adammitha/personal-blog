@@ -56,6 +56,15 @@ public class Blog implements Writable {
         return jsonArray;
     }
 
+    // EFFECTS: Finds the ID of the next article added to the blog (i.e. highest article id + 1)
+    public int findNextID() {
+        int maxSoFar = 0;
+        for (Article article : this.articles) {
+            maxSoFar = Integer.max(maxSoFar, article.getId());
+        }
+        return maxSoFar + 1;
+    }
+
     public String getTitle() {
         return title;
     }

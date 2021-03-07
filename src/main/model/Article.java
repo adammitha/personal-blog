@@ -103,6 +103,7 @@ public class Article implements Writable {
                 this.dateEdited);
     }
 
+    // EFFECTS: Renders article to json object
     @Override
     public JSONObject toJson() {
         JSONObject json = new JSONObject();
@@ -116,6 +117,7 @@ public class Article implements Writable {
         return json;
     }
 
+    // EFFECTS: Renders tags to json array
     private JSONArray tagsToJson() {
         JSONArray tagArray = new JSONArray();
         for (Tag tag : this.tags) {
