@@ -1,0 +1,12 @@
+{
+    "title": "my blog",
+    "articles": [{
+        "dateCreated": "2021-03-07",
+        "author": "Test",
+        "dateEdited": "2021-03-07",
+        "id": 1,
+        "title": "Test",
+        "content": "Test",
+        "tags": [{"name": "Tag 1"}]
+    }]
+}

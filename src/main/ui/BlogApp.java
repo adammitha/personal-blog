@@ -1,7 +1,11 @@
 package ui;
 
+import jdk.nashorn.internal.ir.debug.JSONWriter;
 import model.*;
+import persistence.JsonReader;
+import persistence.JsonWriter;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
@@ -9,11 +13,16 @@ import java.util.stream.Collectors;
 
 // User interface logic for a Blog application that runs on the command line
 public class BlogApp {
+    private static final String JSON_STORE = "./data/blog.json";
     private Blog blog;
     private Scanner input;
+    JsonWriter writer;
+    JsonReader reader;
 
     // EFFECTS: runs the blog application
     public BlogApp() {
+        writer = new JsonWriter(JSON_STORE);
+        reader = new JsonReader(JSON_STORE);
         runBlog();
     }
 
@@ -35,20 +44,54 @@ public class BlogApp {
             if (command.equals("q")) {
                 keepGoing = false;
             } else {
-                parseCommand(command);
+                parseMainMenuCommand(command);
             }
         }
     }
 
     // MODIFIES: this
-    // EFFECTS: creates a new blog with the name provided by the user
+    // EFFECTS: Asks user if they want to load their existing blog, or create a new one
     private void initBlog() {
         input = new Scanner(System.in);
         input.useDelimiter("\n");
+        System.out.println("Welcome to the BloggingApp!\nPlease select an option:");
+        System.out.println("\tn -> create a new blog");
+        System.out.println("\tl -> load your existing blog");
+        String command = input.next();
+        command = command.toLowerCase();
+        parseInitCommand(command);
+    }
+
+    // MODIFIES: this
+    // EFFECTS: creates a new blog with the name provided by the user
+    private void createNewBlog() {
         System.out.println("Welcome to the BloggingApp!\nPlease enter the name of your blog:");
         String title = input.next();
         title = title.toLowerCase();
         blog = new Blog(title);
+    }
+
+    // MODIFIES: this
+    // EFFECTS: loads existing blog from file
+    private void loadBlog() {
+        try {
+            blog = reader.read();
+            System.out.println(String.format("Successfully loaded %s from %s", blog.getTitle(), JSON_STORE));
+        } catch (IOException e) {
+            System.out.println("Unable to read from file " + JSON_STORE);
+        }
+    }
+
+    // EFFECTS: saves blog to file
+    private void saveBlog() {
+        try {
+            writer.open();
+            writer.write(blog);
+            writer.close();
+            System.out.println(String.format("Saved %s to %s", blog.getTitle(), JSON_STORE));
+        } catch (IOException e) {
+            System.out.println("Unable to save blog to " + JSON_STORE);
+        }
     }
 
     // EFFECTS: displays menu to user
@@ -59,11 +102,26 @@ public class BlogApp {
         System.out.println("\tr -> read an existing article");
         System.out.println("\te -> edit an existing article");
         System.out.println("\tt -> tag an existing article");
+        System.out.println("\ts -> save your blog to file");
         System.out.println("\tq -> quit");
     }
 
+    // EFFECTS: evaluates command entered at the init menu and calls relevant function
+    private void parseInitCommand(String command) {
+        switch (command) {
+            case "n":
+                createNewBlog();
+                break;
+            case "l":
+                loadBlog();
+                break;
+            default:
+                System.out.println("I don't recognize that command. Please try again.");
+        }
+    }
+
     // EFFECTS: evaluates the command entered by the user and calls the corresponding function
-    private void parseCommand(String command) {
+    private void parseMainMenuCommand(String command) {
         switch (command) {
             case "n":
                 createNewArticle();
@@ -79,6 +137,9 @@ public class BlogApp {
                 break;
             case "t":
                 tagArticle();
+                break;
+            case "s":
+                saveBlog();
                 break;
             default:
                 System.out.println("I don't recognize that command. Please try again.");
