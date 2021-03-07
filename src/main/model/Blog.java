@@ -1,10 +1,14 @@
 package model;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+import persistence.Writable;
+
 import java.util.ArrayList;
 import java.util.NoSuchElementException;
 
 // Represents a blog with a title and a list of articles that make up the blog.
-public class Blog {
+public class Blog implements Writable {
     private String title;
     private ArrayList<Article> articles;
 
@@ -32,6 +36,26 @@ public class Blog {
         throw new NoSuchElementException(String.format("Could not find article with id %s", id));
     }
 
+    // EFFECTS: returns JSON representation of blog
+    @Override
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+        json.put("title", this.title);
+        json.put("articles", articlesToJson());
+        return json;
+    }
+
+    // EFFECTS: returns articles in this blog as a JSON array
+    private JSONArray articlesToJson() {
+        JSONArray jsonArray = new JSONArray();
+
+        for (Article article : articles) {
+            jsonArray.put(article.toJson());
+        }
+
+        return jsonArray;
+    }
+
     public String getTitle() {
         return title;
     }
@@ -43,5 +67,6 @@ public class Blog {
     public ArrayList<Article> getArticles() {
         return articles;
     }
+
 
 }

@@ -1,11 +1,15 @@
 package model;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+import persistence.Writable;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 
 // Article represents an article in a blog. It has a title, author, and content which are modifiable by the user.
 // The date created, date edited and id are managed automatically by the constructor and edit methods.
-public class Article {
+public class Article implements Writable {
     private static int nextId = 1;
     private int id;
     private String title;
@@ -97,6 +101,27 @@ public class Article {
                 this.author,
                 this.dateCreated,
                 this.dateEdited);
+    }
+
+    @Override
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+        json.put("id", id);
+        json.put("title", title);
+        json.put("author", author);
+        json.put("content", content);
+        json.put("dateCreated", dateCreated.toString());
+        json.put("dateEdited", dateEdited.toString());
+        json.put("tags", tagsToJson());
+        return json;
+    }
+
+    private JSONArray tagsToJson() {
+        JSONArray tagArray = new JSONArray();
+        for (Tag tag : this.tags) {
+            tagArray.put(tag.toJson());
+        }
+        return tagArray;
     }
 
     public String getTitle() {

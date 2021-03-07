@@ -1,0 +1,26 @@
+{
+    "title": "My Other Blog",
+    "articles": [
+        {
+            "dateCreated": "2021-03-06",
+            "author": "Adam Mitha",
+            "dateEdited": "2021-03-06",
+            "id": 1,
+            "title": "A blog post",
+            "content": "Some content",
+            "tags": []
+        },
+        {
+            "dateCreated": "2021-03-06",
+            "author": "Han Solo",
+            "dateEdited": "2021-03-06",
+            "id": 2,
+            "title": "Another post",
+            "content": "I shot first",
+            "tags": [
+                {"name": "Tag 1"},
+                {"name": "Tag 2"}
+            ]
+        }
+    ]
+}
