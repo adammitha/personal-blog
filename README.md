@@ -20,4 +20,3 @@ or content.
 ## User stories - Phase 2
 - As a user, I want to save my blog posts to a file
 - As a user, I want to retrieve the blog posts that I wrote previously to read and edit them
-- As a user, I want my blog posts to save to file every time I add or edit a post 

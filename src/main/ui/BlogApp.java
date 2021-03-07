@@ -67,7 +67,6 @@ public class BlogApp {
     private void createNewBlog() {
         System.out.println("Welcome to the BloggingApp!\nPlease enter the name of your blog:");
         String title = input.next();
-        title = title.toLowerCase();
         blog = new Blog(title);
     }
 
@@ -76,7 +75,7 @@ public class BlogApp {
     private void loadBlog() {
         try {
             blog = reader.read();
-            System.out.println(String.format("Successfully loaded %s from %s", blog.getTitle(), JSON_STORE));
+            System.out.println(String.format("Successfully loaded \"%s\" from %s", blog.getTitle(), JSON_STORE));
         } catch (IOException e) {
             System.out.println("Unable to read from file " + JSON_STORE);
         }

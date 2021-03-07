@@ -1,12 +1,26 @@
 {
-    "title": "my blog",
-    "articles": [{
-        "dateCreated": "2021-03-07",
-        "author": "Test",
-        "dateEdited": "2021-03-07",
-        "id": 1,
-        "title": "Test",
-        "content": "Test",
-        "tags": [{"name": "Tag 1"}]
-    }]
+    "title": "My Diary",
+    "articles": [
+        {
+            "dateCreated": "2021-03-07",
+            "author": "Adam Mtiha",
+            "dateEdited": "2021-03-07",
+            "id": 1,
+            "title": "My first post",
+            "content": "Test content",
+            "tags": [{"name": "Tag 1"}]
+        },
+        {
+            "dateCreated": "2021-03-07",
+            "author": "Luke",
+            "dateEdited": "2021-03-07",
+            "id": 2,
+            "title": "Some other post",
+            "content": "Some content",
+            "tags": [
+                {"name": "Tag 2"},
+                {"name": "Tag 3"}
+            ]
+        }
+    ]
 }
