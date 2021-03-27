@@ -31,6 +31,7 @@ public class BlogGui extends JPanel {
     private JFrame frame;
     private JList<Article> list;
     private JTextField title;
+    private JTextField author;
     private JTextArea content;
     private JButton newButton;
 //    private JButton deleteButton;
@@ -60,7 +61,7 @@ public class BlogGui extends JPanel {
 
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLocation(350, 50);
-        frame.setResizable(false);
+        frame.setResizable(true);
         frame.pack();
         frame.setVisible(true);
 
@@ -74,6 +75,7 @@ public class BlogGui extends JPanel {
 
         pane.add(getListInScrollPane(), getConstraintsForList());
         pane.add(getTitleField(), getConstraintsForTitle());
+        pane.add(getAuthorField(), getConstraintsForAuthor());
         pane.add(getContentInScrollPane(), getConstraintsForContent());
         pane.add(getToolBarWithButtons(), getConstraintsForButtonToolBar());
         pane.add(getMessageLabel(), getConstraintsForMessageLabel());
@@ -111,6 +113,17 @@ public class BlogGui extends JPanel {
         title.setEditable(false);
         title.setMargin(new Insets(5, 5, 5, 5));
         return title;
+    }
+
+    // MODIFIES: this
+    // EFFECTS: constructs and returns the author field
+    private JTextField getAuthorField() {
+        author = new JTextField("", 30);
+        author.setToolTipText("Author must be nonempty");
+        author.setFont(FONT_FOR_WIDGETS);
+        author.setEditable(false);
+        author.setMargin(new Insets(5, 5, 5, 5));
+        return author;
     }
 
     // MODIFIES: this
@@ -226,7 +239,7 @@ public class BlogGui extends JPanel {
         GridBagConstraints c = new GridBagConstraints();
         c.gridx = 0;
         c.gridy = 0;
-        c.gridheight = 2;
+        c.gridheight = 3;
         c.insets = new Insets(12, 12, 11, 11);
         return c;
     }
@@ -241,12 +254,22 @@ public class BlogGui extends JPanel {
         return c;
     }
 
+    // EFFECTS: returns geometric constrains for author field
+    private GridBagConstraints getConstraintsForAuthor() {
+        GridBagConstraints c = new GridBagConstraints();
+        c.gridx = 1;
+        c.gridy = 1;
+        c.anchor = GridBagConstraints.WEST;
+        c.insets = new Insets(0, 0, 11, 12);
+        return c;
+    }
+
     // EFFECTS: returns geometric constraints for content field
     private GridBagConstraints getConstraintsForContent() {
 
         GridBagConstraints c = new GridBagConstraints();
         c.gridx = 1;
-        c.gridy = 1;
+        c.gridy = 2;
         c.fill = GridBagConstraints.BOTH;
         c.insets = new Insets(0, 0, 11, 11);
         return c;
@@ -257,7 +280,7 @@ public class BlogGui extends JPanel {
 
         GridBagConstraints c = new GridBagConstraints();
         c.gridx = 0;
-        c.gridy = 2;
+        c.gridy = 3;
         c.insets = new Insets(0, 12, 11, 11);
         return c;
     }
@@ -267,7 +290,7 @@ public class BlogGui extends JPanel {
 
         GridBagConstraints c = new GridBagConstraints();
         c.gridx = 1;
-        c.gridy = 2;
+        c.gridy = 3;
         c.insets = new Insets(0, 11, 11, 11);
         c.anchor = GridBagConstraints.WEST;
         return c;
@@ -290,17 +313,20 @@ public class BlogGui extends JPanel {
 
 //                deleteButton.setEnabled(false);
                 title.setText("");
+                author.setText("");
                 content.setText("");
             } else {
 //                deleteButton.setEnabled(true);
                 Article a = list.getSelectedValue();
                 title.setText(a.getTitle());
+                author.setText(a.getAuthor());
                 content.setText(a.getContent());
                 content.setCaretPosition(0);
             }
 
             displayMessage("", MessageType.NONE);
             title.setEditable(false);
+            author.setEditable(false);
             content.setEditable(false);
             newButton.setEnabled(true);
 //            saveButton.setEnabled(false);
@@ -348,8 +374,10 @@ public class BlogGui extends JPanel {
 //            deleteButton.setEnabled(false);
 //            cancelButton.setEnabled(true);
             title.setEditable(true);
+            author.setEditable(true);
             content.setEditable(true);
             title.setText("");
+            author.setText("");
             content.setText("");
             displayMessage("Write a new Blog post", MessageType.INFO);
             title.requestFocusInWindow();
@@ -361,12 +389,13 @@ public class BlogGui extends JPanel {
         @Override
         public void actionPerformed(ActionEvent e) {
             String titleText = title.getText();
+            String authorText = author.getText();
             String contentText = content.getText();
 
             titleText = (titleText == null) ? "" : titleText.trim();
 
             Article newArticle = new Article(
-                    Article.getNextId(), titleText, "<Author goes here>", contentText, LocalDate.now()
+                    Article.getNextId(), titleText, authorText, contentText, LocalDate.now()
             );
             Article originalArticle = list.getSelectedValue();
 
@@ -388,6 +417,7 @@ public class BlogGui extends JPanel {
             list.ensureIndexIsVisible(i);
 
             title.setEditable(false);
+            author.setEditable(false);
             content.setEditable(false);
             newButton.setEnabled(true);
             saveButton.setEnabled(false);
@@ -402,11 +432,12 @@ public class BlogGui extends JPanel {
 
         displayMessage("Note is being edited", MessageType.INFO);
         newButton.setEnabled(false);
-//        saveButton.setEnabled(true);
+        saveButton.setEnabled(true);
 //        deleteButton.setEnabled(false);
 //        cancelButton.setEnabled(true);
         updateFlag = true;
         title.setEditable(true);
+        author.setEditable(true);
         content.setEditable(true);
         title.setCaretPosition(0);
         title.requestFocusInWindow();
