@@ -77,5 +77,9 @@ public class Blog implements Writable {
         return articles;
     }
 
+    public void setArticles(ArrayList<Article> articles) {
+        this.articles = articles;
+    }
+
 
 }

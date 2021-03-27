@@ -3,6 +3,7 @@ package ui;
 import model.Article;
 import model.Blog;
 import persistence.JsonReader;
+import persistence.JsonWriter;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -38,6 +39,7 @@ public class BlogGui extends JPanel {
     private JLabel messageLabel;
     private boolean updateFlag;
     private JsonReader reader;
+    private JsonWriter writer;
 
     enum MessageType { INFO, WARN, NONE }
 
@@ -46,6 +48,7 @@ public class BlogGui extends JPanel {
     // EFFECTS: Starts the Blog GUI
     public BlogGui() {
         reader = new JsonReader(JSON_STORE);
+        writer = new JsonWriter(JSON_STORE);
         try {
             blog = reader.read();
         } catch (IOException e) {
@@ -362,9 +365,34 @@ public class BlogGui extends JPanel {
 
             titleText = (titleText == null) ? "" : titleText.trim();
 
-            Article newArticle = new Article(Article.getNextId(), titleText, "<Author goes here>", contentText, LocalDate.now());
+            Article newArticle = new Article(
+                    Article.getNextId(), titleText, "<Author goes here>", contentText, LocalDate.now()
+            );
             Article originalArticle = list.getSelectedValue();
 
+            if (updateFlag) {
+                // Update article
+            } else {
+                getArticleListModel().add(newArticle);
+                try {
+                    persistBlog();
+                } catch (IOException ioException) {
+                    alertUserToException(ActionType.CREATE);
+                }
+            }
+
+            list.updateUI();
+
+            int i = getArticleListModel().indexOf(newArticle);
+            list.setSelectedIndex(i);
+            list.ensureIndexIsVisible(i);
+
+            title.setEditable(false);
+            content.setEditable(false);
+            newButton.setEnabled(true);
+            saveButton.setEnabled(false);
+            updateFlag = false;
+            displayMessage("Note is saved", MessageType.INFO);
         }
     }
 
@@ -382,5 +410,38 @@ public class BlogGui extends JPanel {
         content.setEditable(true);
         title.setCaretPosition(0);
         title.requestFocusInWindow();
+    }
+
+    // MODIFIES: this
+    // EFFECTS: persists updated blog state to file
+    private void persistBlog() throws IOException {
+        blog.setArticles(getArticleListModel().getArticles());
+        writer.write(blog);
+    }
+
+    // EFFECTS: displays error message to user
+    private void alertUserToException(ActionType action) {
+        String s = "";
+        switch (action) {
+            case CREATE: s = " creating ";
+                break;
+            case UPDATE: s = " updating ";
+                break;
+            case DELETE: s = " deleting ";
+                break;
+            case LOAD: s = "loading ";
+                break;
+            default:
+                throw new IllegalArgumentException("Invalid action: " + action);
+        }
+
+        String msg = "<html><center>"
+                + "An database exception has occurred<br>"
+                + "while " + s + " the Article(s). Please check<br>"
+                + "the log to view the technical details.<br> Exiting the app.";
+
+        JOptionPane.showMessageDialog(frame, new JLabel(msg), "Error", JOptionPane.PLAIN_MESSAGE);
+
+        System.exit(1);
     }
 }
