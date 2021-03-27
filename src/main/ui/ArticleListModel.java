@@ -4,7 +4,6 @@ import model.Article;
 
 import javax.swing.*;
 import java.util.ArrayList;
-import java.util.List;
 
 // ArticleListModel represents a list of articles in the BlogApp GUI
 public class ArticleListModel extends AbstractListModel<Article> {

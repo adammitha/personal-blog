@@ -14,6 +14,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.time.LocalDate;
 
@@ -75,10 +76,6 @@ public class BlogGui extends JPanel {
         pane.add(getContentInScrollPane(), getConstraintsForContent());
         pane.add(getToolBarWithButtons(), getConstraintsForButtonToolBar());
         pane.add(getMessageLabel(), getConstraintsForMessageLabel());
-    }
-
-    private ArticleListModel getArticleListModel() {
-        return (ArticleListModel) list.getModel();
     }
 
     // MODIFIES: this
@@ -386,10 +383,11 @@ public class BlogGui extends JPanel {
         }
     }
 
-    // MODIFIES: BlogGui
-    // EFFECTS: Loads blog from file
+    // LoadActionListener handles loading a blog from file
     private class LoadActionListener implements ActionListener {
 
+        // MODIFIES: BlogGui
+        // EFFECTS: Loads blog from file
         @Override
         public void actionPerformed(ActionEvent e) {
             try {
@@ -400,13 +398,15 @@ public class BlogGui extends JPanel {
             getArticleListModel().setArticles(blog.getArticles());
             list.updateUI();
             displayMessage("Blog loaded from file", MessageType.INFO);
+            loadButton.setEnabled(false);
         }
     }
 
-    // MODIFIES: BlogGui
-    // EFFECTS: Saves new/updated article and persists to file
+    // SaveActionListener handles saving the blog to file
     private class SaveActionListener implements ActionListener {
 
+        // MODIFIES: BlogGui
+        // EFFECTS: Saves new/updated article and persists to file
         @Override
         public void actionPerformed(ActionEvent e) {
             String titleText = title.getText();
@@ -421,25 +421,23 @@ public class BlogGui extends JPanel {
                 // Update article
                 Article originalArticle = list.getSelectedValue();
                 originalArticle.edit(titleText, authorText, contentText);
-                try {
-                    persistBlog();
-                } catch (IOException ioException) {
-                    alertUserToException(ActionType.UPDATE);
-                }
+                persistBlog(ActionType.UPDATE);
                 i = getArticleListModel().indexOf(originalArticle);
             } else {
                 Article newArticle = new Article(
                         Article.getNextId(), titleText, authorText, contentText, LocalDate.now()
                 );
                 getArticleListModel().add(newArticle);
-                try {
-                    persistBlog();
-                } catch (IOException ioException) {
-                    alertUserToException(ActionType.CREATE);
-                }
+                persistBlog(ActionType.CREATE);
                 i = getArticleListModel().indexOf(newArticle);
             }
 
+            updateListAfterSave(i);
+        }
+
+        // MODIFIES: BlogGui
+        // EFFECTS: updates list of articles with newly added/edited article
+        private void updateListAfterSave(int i) {
             list.updateUI();
 
 
@@ -475,11 +473,15 @@ public class BlogGui extends JPanel {
 
     // MODIFIES: this
     // EFFECTS: persists updated blog state to file
-    private void persistBlog() throws IOException {
-        blog.setArticles(getArticleListModel().getArticles());
-        writer.open();
-        writer.write(blog);
-        writer.close();
+    private void persistBlog(ActionType action) {
+        try {
+            blog.setArticles(getArticleListModel().getArticles());
+            writer.open();
+            writer.write(blog);
+            writer.close();
+        } catch (FileNotFoundException e) {
+            alertUserToException(action);
+        }
     }
 
     // EFFECTS: displays error message to user
@@ -506,5 +508,10 @@ public class BlogGui extends JPanel {
         JOptionPane.showMessageDialog(frame, new JLabel(msg), "Error", JOptionPane.PLAIN_MESSAGE);
 
         System.exit(1);
+    }
+
+    // EFFECTS: Retrieves ArticleListModel
+    private ArticleListModel getArticleListModel() {
+        return (ArticleListModel) list.getModel();
     }
 }

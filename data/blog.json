@@ -2,22 +2,22 @@
     "title": "My blog",
     "articles": [
         {
-            "dateCreated": "2021-03-09",
-            "author": "Adam",
+            "dateCreated": "2021-03-27",
+            "author": "Hello world",
             "dateEdited": "2021-03-27",
             "id": 1,
-            "title": "Some different title",
-            "content": "Some content",
+            "title": "A new post",
+            "content": "Yay",
             "tags": []
         },
         {
-            "dateCreated": "2021-03-09",
+            "dateCreated": "2021-03-27",
             "author": "Adam",
-            "dateEdited": "2021-03-09",
-            "id": 2,
-            "title": "Post 2",
-            "content": "Content 2",
-            "tags": [{"name": "Tag 1"}]
+            "dateEdited": "2021-03-27",
+            "id": 1,
+            "title": "Another post",
+            "content": "Hello world",
+            "tags": []
         }
     ]
 }
