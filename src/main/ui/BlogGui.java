@@ -15,7 +15,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
-import java.net.URL;
 import java.time.LocalDate;
 
 // The BlogGui class is based on the following Notes app:
@@ -36,6 +35,7 @@ public class BlogGui extends JPanel {
     private JButton newButton;
 //    private JButton deleteButton;
     private JButton saveButton;
+    private JButton loadButton;
 //    private JButton cancelButton;
     private JLabel messageLabel;
     private boolean updateFlag;
@@ -50,11 +50,7 @@ public class BlogGui extends JPanel {
     public BlogGui() {
         reader = new JsonReader(JSON_STORE);
         writer = new JsonWriter(JSON_STORE);
-        try {
-            blog = reader.read();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        blog = new Blog("My blog");
 
         frame = new JFrame("BlogApp");
         addWidgetsToFrame(frame);
@@ -151,6 +147,7 @@ public class BlogGui extends JPanel {
 
         newButton = getButton("New");
         saveButton = getButton("Save");
+        loadButton = getButton("Load");
 //        deleteButton = getButton("Delete");
 //        cancelButton = getButton("Cancel");
 
@@ -158,7 +155,8 @@ public class BlogGui extends JPanel {
         toolBar.add(newButton);
         toolBar.addSeparator(new Dimension(2, 0));
         toolBar.add(saveButton);
-//        toolBar.addSeparator(new Dimension(2, 0));
+        toolBar.addSeparator(new Dimension(2, 0));
+        toolBar.add(loadButton);
 //        toolBar.add(deleteButton);
 //        toolBar.addSeparator(new Dimension(2, 0));
 //        toolBar.add(cancelButton);
@@ -186,13 +184,18 @@ public class BlogGui extends JPanel {
 
         switch (label) {
             case "New":
-                button.setIcon(getIconForButton("New24.gif"));
+                button.setIcon(getIconForButton("new24.gif"));
                 button.addActionListener(new NewActionListener());
                 break;
             case "Save":
                 button.setEnabled(false);
-                button.setIcon(getIconForButton("Save24.gif"));
+                button.setIcon(getIconForButton("save24.gif"));
                 button.addActionListener(new SaveActionListener());
+                break;
+            case "Load":
+                button.setEnabled(true);
+                button.setIcon(getIconForButton("open24.gif"));
+                button.addActionListener(new LoadActionListener());
                 break;
             default:
                 throw new IllegalArgumentException("*** Invalid button label ***");
@@ -205,9 +208,8 @@ public class BlogGui extends JPanel {
     // EFFECTS: Retrieves icon for button
     private ImageIcon getIconForButton(String iconName) {
 
-        String urlString = "/toolbarButtonGraphics/general/" + iconName;
-        URL url = this.getClass().getResource(urlString);
-        return new ImageIcon(url);
+        String urlString = "./img/" + iconName;
+        return new ImageIcon(urlString);
     }
 
     // MODIFIES: this
@@ -364,7 +366,7 @@ public class BlogGui extends JPanel {
     // NewActionListener handles creation of new articles
     private class NewActionListener implements ActionListener {
 
-        // MODIFIES: this
+        // MODIFIES: BlogGui
         // EFFECTS: Renders the new Article UI
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -384,6 +386,25 @@ public class BlogGui extends JPanel {
         }
     }
 
+    // MODIFIES: BlogGui
+    // EFFECTS: Loads blog from file
+    private class LoadActionListener implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            try {
+                blog = reader.read();
+            } catch (IOException exception) {
+                alertUserToException(ActionType.LOAD);
+            }
+            getArticleListModel().setArticles(blog.getArticles());
+            list.updateUI();
+            displayMessage("Blog loaded from file", MessageType.INFO);
+        }
+    }
+
+    // MODIFIES: BlogGui
+    // EFFECTS: Saves new/updated article and persists to file
     private class SaveActionListener implements ActionListener {
 
         @Override
@@ -394,25 +415,34 @@ public class BlogGui extends JPanel {
 
             titleText = (titleText == null) ? "" : titleText.trim();
 
-            Article newArticle = new Article(
-                    Article.getNextId(), titleText, authorText, contentText, LocalDate.now()
-            );
-            Article originalArticle = list.getSelectedValue();
+            int i = 0;
 
             if (updateFlag) {
                 // Update article
+                Article originalArticle = list.getSelectedValue();
+                originalArticle.edit(titleText, authorText, contentText);
+                try {
+                    persistBlog();
+                } catch (IOException ioException) {
+                    alertUserToException(ActionType.UPDATE);
+                }
+                i = getArticleListModel().indexOf(originalArticle);
             } else {
+                Article newArticle = new Article(
+                        Article.getNextId(), titleText, authorText, contentText, LocalDate.now()
+                );
                 getArticleListModel().add(newArticle);
                 try {
                     persistBlog();
                 } catch (IOException ioException) {
                     alertUserToException(ActionType.CREATE);
                 }
+                i = getArticleListModel().indexOf(newArticle);
             }
 
             list.updateUI();
 
-            int i = getArticleListModel().indexOf(newArticle);
+
             list.setSelectedIndex(i);
             list.ensureIndexIsVisible(i);
 
@@ -422,7 +452,7 @@ public class BlogGui extends JPanel {
             newButton.setEnabled(true);
             saveButton.setEnabled(false);
             updateFlag = false;
-            displayMessage("Note is saved", MessageType.INFO);
+            displayMessage("Blog is saved", MessageType.INFO);
         }
     }
 

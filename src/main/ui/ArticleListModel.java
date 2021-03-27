@@ -60,6 +60,12 @@ public class ArticleListModel extends AbstractListModel<Article> {
         return this.articles;
     }
 
+    // MODIFIES: this
+    // EFFECTS: sets list of articles
+    public void setArticles(ArrayList<Article> articles) {
+        this.articles = articles;
+    }
+
     // EFFECTS: Returns true if there are no articles in the list
     public boolean isEmpty() {
         return articles.isEmpty();
