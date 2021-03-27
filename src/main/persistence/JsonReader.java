@@ -24,6 +24,7 @@ public class JsonReader {
         this.source = source;
     }
 
+    // EFFECTS: Reads blog from JSON file
     public Blog read() throws IOException {
         String jsonData = readFile(source);
         JSONObject jsonObject = new JSONObject(jsonData);

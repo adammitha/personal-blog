@@ -12,7 +12,7 @@ import java.util.Scanner;
 import java.util.stream.Collectors;
 
 // User interface logic for a Blog application that runs on the command line
-public class BlogApp {
+public class BlogCli {
     private static final String JSON_STORE = "./data/blog.json";
     private Blog blog;
     private Scanner input;
@@ -20,7 +20,7 @@ public class BlogApp {
     JsonReader reader;
 
     // EFFECTS: runs the blog application
-    public BlogApp() {
+    public BlogCli() {
         writer = new JsonWriter(JSON_STORE);
         reader = new JsonReader(JSON_STORE);
         runBlog();
