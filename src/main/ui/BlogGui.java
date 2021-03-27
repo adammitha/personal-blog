@@ -416,7 +416,9 @@ public class BlogGui extends JPanel {
     // EFFECTS: persists updated blog state to file
     private void persistBlog() throws IOException {
         blog.setArticles(getArticleListModel().getArticles());
+        writer.open();
         writer.write(blog);
+        writer.close();
     }
 
     // EFFECTS: displays error message to user
