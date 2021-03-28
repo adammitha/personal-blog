@@ -37,7 +37,6 @@ public class BlogGui extends JPanel {
 //    private JButton deleteButton;
     private JButton saveButton;
     private JButton loadButton;
-//    private JButton cancelButton;
     private JLabel messageLabel;
     private boolean updateFlag;
     private JsonReader reader;
@@ -146,7 +145,6 @@ public class BlogGui extends JPanel {
         saveButton = getButton("Save");
         loadButton = getButton("Load");
 //        deleteButton = getButton("Delete");
-//        cancelButton = getButton("Cancel");
 
         JToolBar toolBar = getToolBarForButtons();
         toolBar.add(newButton);
@@ -155,10 +153,6 @@ public class BlogGui extends JPanel {
         toolBar.addSeparator(new Dimension(2, 0));
         toolBar.add(loadButton);
 //        toolBar.add(deleteButton);
-//        toolBar.addSeparator(new Dimension(2, 0));
-//        toolBar.add(cancelButton);
-//        toolBar.addSeparator(new Dimension(5, 0));
-//        toolBar.add(getButton("Help"));
 
         return toolBar;
     }
@@ -328,8 +322,7 @@ public class BlogGui extends JPanel {
             author.setEditable(false);
             content.setEditable(false);
             newButton.setEnabled(true);
-//            saveButton.setEnabled(false);
-//            cancelButton.setEnabled(false);
+            saveButton.setEnabled(false);
             updateFlag = false;
         }
     }
@@ -371,7 +364,6 @@ public class BlogGui extends JPanel {
             newButton.setEnabled(false);
             saveButton.setEnabled(true);
 //            deleteButton.setEnabled(false);
-//            cancelButton.setEnabled(true);
             title.setEditable(true);
             author.setEditable(true);
             content.setEditable(true);
@@ -450,7 +442,7 @@ public class BlogGui extends JPanel {
             newButton.setEnabled(true);
             saveButton.setEnabled(false);
             updateFlag = false;
-            displayMessage("Blog is saved", MessageType.INFO);
+            displayMessage("Article has been saved", MessageType.INFO);
         }
     }
 
@@ -458,11 +450,10 @@ public class BlogGui extends JPanel {
     // EFFECTS: helper function to update UI when user double clicks an article
     private void doubleClickActionRoutine() {
 
-        displayMessage("Note is being edited", MessageType.INFO);
+        displayMessage("Article is being edited", MessageType.INFO);
         newButton.setEnabled(false);
         saveButton.setEnabled(true);
 //        deleteButton.setEnabled(false);
-//        cancelButton.setEnabled(true);
         updateFlag = true;
         title.setEditable(true);
         author.setEditable(true);
