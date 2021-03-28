@@ -4,6 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.NoSuchElementException;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -32,6 +33,8 @@ class BlogTest {
                 LocalDate.now());
         assertTrue(blog.addArticle(article));
         assertEquals(blog.getArticles().size(), 1);
+        blog.setArticles(new ArrayList<Article>());
+        assertEquals(blog.getArticles().size(), 0);
     }
 
     @Test
