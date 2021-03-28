@@ -5,6 +5,7 @@ import model.Blog;
 import persistence.JsonReader;
 import persistence.JsonWriter;
 
+import javax.sound.sampled.*;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.ListSelectionEvent;
@@ -14,6 +15,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.time.LocalDate;
@@ -390,6 +392,12 @@ public class BlogGui extends JPanel {
             getArticleListModel().setArticles(blog.getArticles());
             list.updateUI();
             displayMessage("Blog loaded from file", MessageType.INFO);
+            try {
+                playSoundEffect("./sound/load.wav");
+            } catch (IOException | UnsupportedAudioFileException
+                    | LineUnavailableException exception) {
+                exception.printStackTrace();
+            }
             loadButton.setEnabled(false);
         }
     }
@@ -504,5 +512,14 @@ public class BlogGui extends JPanel {
     // EFFECTS: Retrieves ArticleListModel
     private ArticleListModel getArticleListModel() {
         return (ArticleListModel) list.getModel();
+    }
+
+    // EFFECTS: Plays the provided sound effect
+    private void playSoundEffect(String effectPath)
+            throws IOException, UnsupportedAudioFileException, LineUnavailableException {
+        AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(effectPath).getAbsoluteFile());
+        Clip clip = AudioSystem.getClip();
+        clip.open(audioInputStream);
+        clip.start();
     }
 }

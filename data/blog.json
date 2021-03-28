@@ -13,10 +13,19 @@
         {
             "dateCreated": "2021-03-27",
             "author": "Adam",
-            "dateEdited": "2021-03-27",
+            "dateEdited": "2021-03-28",
             "id": 1,
-            "title": "Another post",
+            "title": "Another post - edited",
             "content": "Hello world",
+            "tags": []
+        },
+        {
+            "dateCreated": "2021-03-28",
+            "author": "Me",
+            "dateEdited": "2021-03-28",
+            "id": 1,
+            "title": "A new post",
+            "content": "Some content",
             "tags": []
         }
     ]
