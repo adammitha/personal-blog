@@ -96,11 +96,9 @@ public class Article implements Writable {
     @Override
     public String toString() {
         return String.format(
-                "%s by %s. Written on %s. Last edited %s.",
+                "%s by %s",
                 this.title,
-                this.author,
-                this.dateCreated,
-                this.dateEdited);
+                this.author);
     }
 
     // EFFECTS: Renders article to json object
