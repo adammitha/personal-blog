@@ -2,30 +2,30 @@
     "title": "My blog",
     "articles": [
         {
-            "dateCreated": "2021-03-27",
-            "author": "Hello world",
-            "dateEdited": "2021-03-27",
-            "id": 1,
-            "title": "A new post",
-            "content": "Yay",
-            "tags": []
-        },
-        {
-            "dateCreated": "2021-03-27",
-            "author": "Adam",
-            "dateEdited": "2021-03-28",
-            "id": 1,
-            "title": "Another post - edited",
-            "content": "Hello world",
-            "tags": []
-        },
-        {
-            "dateCreated": "2021-03-28",
+            "dateCreated": "2021-03-30",
             "author": "Me",
-            "dateEdited": "2021-03-28",
+            "dateEdited": "2021-03-30",
             "id": 1,
-            "title": "A new post",
-            "content": "Some content",
+            "title": "An edited post",
+            "content": "Some content - edited",
+            "tags": []
+        },
+        {
+            "dateCreated": "2021-03-30",
+            "author": "Bob",
+            "dateEdited": "2021-03-30",
+            "id": 1,
+            "title": "post 2",
+            "content": "Some other content",
+            "tags": []
+        },
+        {
+            "dateCreated": "2021-03-30",
+            "author": "Another author",
+            "dateEdited": "2021-03-30",
+            "id": 2,
+            "title": "Post 3",
+            "content": "Blah",
             "tags": []
         }
     ]

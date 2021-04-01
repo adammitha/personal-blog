@@ -48,9 +48,14 @@ class BlogTest {
                     LocalDate.now());
             blog.addArticle(article);
         }
-        assertEquals(blog.findArticleById(1).getId(), 1);
-        assertEquals(blog.findArticleById(2).getTitle(), "Article #2");
-        assertEquals(blog.findArticleById(8).getContent(), "Content #8");
+        try {
+            assertEquals(blog.findArticleById(1).getId(), 1);
+            assertEquals(blog.findArticleById(2).getTitle(), "Article #2");
+            assertEquals(blog.findArticleById(8).getContent(), "Content #8");
+        } catch (NoSuchElementException e) {
+            fail("Should not throw an exception");
+        }
+
     }
 
     @Test
@@ -66,6 +71,7 @@ class BlogTest {
         }
         try {
             Article article = blog.findArticleById(6);
+            fail("Should throw a NoSuchElementException");
         } catch (NoSuchElementException e) {
             assertEquals(e.getMessage(), "Could not find article with id 6");
         }
