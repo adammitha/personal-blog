@@ -20,3 +20,10 @@ or content.
 ## User stories - Phase 2
 - As a user, I want to save my blog posts to a file
 - As a user, I want to retrieve the blog posts that I wrote previously to read and edit them
+
+## Phase 4: Task 2
+The Blog class in the model package is robust. In particular, the
+findArticleById() method throws a NoSuchElementException if the function is invoked
+with the id of an article that does not exist in the blog. There are two test cases
+in the BlogTest class - one where we would expect an exception to be thrown, and one
+where no exception should be thrown. 
