@@ -24,6 +24,11 @@ public class ArticleTest {
     }
 
     @Test
+    public void testConstructor() {
+        assertEquals(article.getDateCreated(), LocalDate.now().minusDays(1));
+    }
+
+    @Test
     public void testGetNextID() {
         int first_id = Article.getNextId();
         int second_id = Article.getNextId();
@@ -99,8 +104,6 @@ public class ArticleTest {
     public void testToString() {
         assertTrue(article.toString().contains(article.getTitle()));
         assertTrue(article.toString().contains(article.getAuthor()));
-        assertTrue(article.toString().contains(article.getDateCreated().toString()));
-        assertTrue(article.toString().contains(article.getDateEdited().toString()));
     }
 
 }
