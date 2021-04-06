@@ -22,8 +22,18 @@ or content.
 - As a user, I want to retrieve the blog posts that I wrote previously to read and edit them
 
 ## Phase 4: Task 2
-The Blog class in the model package is robust. In particular, the
-findArticleById() method throws a NoSuchElementException if the function is invoked
-with the id of an article that does not exist in the blog. There are two test cases
-in the BlogTest class - one where we would expect an exception to be thrown, and one
-where no exception should be thrown. 
+The Blog class in the model package is robust. In particular, the findArticleById() method throws a 
+NoSuchElementException if the function is invoked with the id of an article that does not exist in the blog. 
+There are two test cases in the BlogTest class - one where we would expect an exception to be thrown, and one
+where no exception should be thrown.
+
+## Phase 4: Task 3
+Both the BlogGui and Blog Cli classes have a Blog, JsonWriter, and JsonReader field. This repetition could be eliminated
+by creating a shared abstract class or superclass that both the BlogGui and BlogCli classes inherit 
+from that contains the shared fields. This would ensure that the BlogGui and BlogCli classes focus
+on implementation details that are specific to the graphical or command line interfaces (e.g. reading input from 
+stdin, or rendering images to the screen).
+
+I would also like to give the end user the option to decide which user interface they would like to use. Currently, 
+I have to manually modify the Main class to instantiate either the BlogGui or BlogCli. It would be nice to provide a
+simple prompt on start-up to give the user a choice without having to modify the source code.
